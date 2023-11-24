@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solaria Tech Engineering: In-car API</title>
+    <style>
+        /* Set the background color to black and the text color to white */
+        body {
+            background-color: black;
+            color: white;
+        }
+        /* Center-align the title and the error message */
+        h1, p {
+            text-align: center;
+        }
+        /* Set the font size and color of the error message */
+        p {
+            font-size: 24px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Solaria Tech Engineering: In-Car API Dashboard</h1>
+    <!-- Check if the error variable is not None -->
+    {% if error %}
+        <!-- Display the error message with a red color -->
+        <p>{{ error }}</p>
+    {% else %}
+        <!-- Display a generic message if there is no error -->
+        <p>An error occurred while processing your request. Please try again later.</p>
+    {% endif %}
+</body>
+</html>
