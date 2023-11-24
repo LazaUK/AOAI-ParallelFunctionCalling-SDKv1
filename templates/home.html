@@ -1,1 +1,61 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solaria Tech Engineering: In-car API</title>
+	<meta name="author" content="GitHub Copilot">
+	<meta name="editor" content="Laziz Turakulov">
+    <style>
+        /* Set the background color to black and the text color to white */
+        body {
+            background-color: black;
+            color: white;
+        }
+        /* Center-align the title */
+        h1 {
+            text-align: center;
+        }
+        /* Create a table with two columns */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        /* Set the width of the table columns */
+        td:first-child {
+            width: 40%;
+        }
+        td:last-child {
+            width: 60%;
+        }
+        /* Remove the border and padding of the table cells */
+        td {
+            border: none;
+            padding: 30px;
+        }
+        /* Center-align the image and the text in the table cells */
+        img, p {
+            display: block;
+            margin: 10 auto;
+        }
+        /* Resize the image to fit the column width limit */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Solaria Tech Engineering: In-Car API Dashboard</h1>
+    <table>
+        <tr>
+            <!-- The first column contains the image of the car -->
+            <td>
+                <img src="{{ url_for('static', filename=api_image) }}" alt="An image of a car dashboard">
+            </td>
+            <!-- The second column contains the company description -->
+            <td>
+                <p>{{ api_description }}</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
