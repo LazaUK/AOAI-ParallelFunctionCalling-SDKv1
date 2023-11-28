@@ -44,15 +44,11 @@ python -m flask run
 ```
 8. Air Conditioner, Lights and Radio endpoints require a body payload, which accepts **ON** and **OFF** values for its *switch* key.
 ``` JSON
-{
-    "switch": "ON"
-}
+{"switch": "ON"}
 ```
 9. Windows endpoint also requires a body payload, although it accepts **UP** and **DOWN** values for its *roll* key. 
 ``` JSON
-{
-    "roll": "DOWN"
-}
+{"roll": "DOWN"}
 ```
 
 ## Step 2: Configuring Azure OpenAI environment
