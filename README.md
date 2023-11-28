@@ -15,6 +15,20 @@ Additionally, to help with the practical test of API calls, I provide a companio
 - [Step 3: End-to-end testing of parallel function calling]()
 
 ## Step 1: Configuring Flask Web app
+1. Add new environment variable named **FLASK_APP** that points to the provided Vehicle_API_Simulations.py Python script.
+![screenshot_1.1_environment](images/step1_flask_env.png)
+2. Start Flask Web app from the repo's root folder:
+```
+python -m flask run
+```
+3. You should be able to access its home page at http://localhost:5000/
+![screenshot_1.1_webapp](images/step1_flask_app.png)
+4. As described on the home page, this Web app exposes the following 5 API endpoints of a fictitious vehicle's in-car controls:
+   - GET endpoint at http://localhost:5000/status to get the latest status of each vehicle control;
+   - POST endpoint at http://localhost:5000/airconditioner to switch the air conditioner on / off;
+   - POST endpoint at http://localhost:5000/lights to switch the lights on / off;
+   - POST endpoint at http://localhost:5000/radio to switch the radio on / off;
+   - POST endpoint at http://localhost:5000/windows to roll the windows up / down.
 
 ## Step 2: Configuring Azure OpenAI environment
 
