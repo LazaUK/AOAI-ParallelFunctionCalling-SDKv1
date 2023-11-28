@@ -66,18 +66,97 @@ client = AzureOpenAI(
 - to analyse the original prompt and decide which functions to call.
 ``` Python
 response = client.chat.completions.create(
-    model = os.getenv("OPENAI_API_DEPLOY"), # model = "Azure OpenAI deployment name".
+    model = os.getenv("OPENAI_API_DEPLOY"),
     messages = messages,
     tools = tools,
-    tool_choice = "auto",  # auto is default, but we'll be explicit
+    tool_choice = "auto"
 )
 ```
 - and then again later to process data retrieved from API endpoints and send its completion back to the client.
 ``` Python
 second_response = client.chat.completions.create(
-    model = os.getenv("OPENAI_API_DEPLOY"), # model = "Azure OpenAI deployment name".
+    model = os.getenv("OPENAI_API_DEPLOY"),
     messages=messages
 )
 ```
 
 ## Step 3: End-to-end testing of parallel function calling
+1. Set of available functions is described in the **tools** list. Function's description will provide a hint to GPT model on its capabilities, while the list of its proerties will be used to match with the prompt's entities. 
+``` Python
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "set_vehicle_feature_on_off",
+            "description": "Set or switch features like air conditioner, lights and radio on or off",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "feature": {
+                        "type": "string",
+                        "enum": ["airconditioner", "lights", "radio"]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["on", "off"]
+                    },
+                },
+                "required": ["feature", "status"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "set_vehicle_feature_up_down",
+            "description": "Set or roll features like windows up or down",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "feature": {
+                        "type": "string",
+                        "enum": ["windows"]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["up", "down"]
+                    },
+                },
+                "required": ["feature", "status"]
+            }
+        }
+    }
+]
+```
+2. Next step is to match the list of functions from **tools** with the actual Python functions.
+``` Python
+available_functions = {
+    "set_vehicle_feature_on_off": vehicle_control,
+    "set_vehicle_feature_up_down": vehicle_control
+}
+```
+3. Based on the intent and entities extracted, Jupyter notebook will call relevant API endpoint of our Flask Web app.
+``` Python
+def vehicle_control(feature, action, status):
+    vehicle_control_api = f"{VEHICLE_URL}/{feature}"
+    headers = {"Content-Type": "application/json"}
+    data = {action: status}
+    vehicle_control_status = requests.post(
+        vehicle_control_api,
+        headers = headers,
+        json = data
+    )
+    function_response = vehicle_control_status.json()
+    return function_response
+```
+4. You may set now your system and user prompts, or pass user messages dynamically.
+``` JSON
+[
+    {"role": "system", "content": "You are a smart in-car assistant. Your listen to commands and control vehicle features like air conditioner, lights, radio and windows."},
+    {"role": "user", "content": "Please, switch off the air conditioner and roll the windows down."}
+]
+```
+5. If everything was setup correctly, you should see something like this. Enjoy!
+``` JSON
+The air conditioner is now switched off, and the windows have been rolled down. Enjoy the breeze!
+```
