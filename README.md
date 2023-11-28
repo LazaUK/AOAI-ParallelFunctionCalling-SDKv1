@@ -1,6 +1,6 @@
 # Parallel functon calling in Azure OpenAI GPT-4-Turbo, with a companion Web API app.
 
-Version 1106 of Azure OpenAI GPT models, such as GPT-35-Turbo and GPT-4-Turbo, now supports the use of parallel function calling. This new feature allows your Azure OpenAI based solution to extract multiple intents from a single prompt, check the functions available and then execute them in parallel. As a result, your solution will perform more effectively and efficiently because of a shorter round-trips between required multiple API calls.
+Version 1106 of Azure OpenAI GPT models, such as GPT-35-Turbo and GPT-4-Turbo, now supports the use of parallel function calling. This new feature allows your Azure OpenAI based solution to extract multiple intents from a single prompt, check the functions available and then execute them in parallel. As a result, your solution will perform more effectively and efficiently because of fewer round-trips between required multiple API calls.
 
 In this repo I'll demo the use of the latest openai Python package v1.x, that was released in November 2023. To use the latest version of *openai* python package, please upgrade it with the following pip command:
 ```
@@ -15,7 +15,7 @@ Additionally, to help with the practical test of API calls, I provide a companio
 - [Step 3: End-to-end testing of parallel function calling](https://github.com/LazaUK/AOAI-ParallelFunctionCalling-SDKv1#step-3-end-to-end-testing-of-parallel-function-calling)
 
 ## Step 1: Configuring Flask Web app
-1. Add new environment variable named **FLASK_APP** that points to the provided *Vehicle_API_Simulations.py* Python script.
+1. Add a new environment variable named **FLASK_APP** that points to the provided *Vehicle_API_Simulations.py* Python script.
 ![screenshot_1.1_environment](images/step1_flask_env.png)
 2. Start Flask Web app from the repo's root folder:
 ```
@@ -34,7 +34,7 @@ python -m flask run
 ``` JSON
 {'airconditioner': 'OFF', 'lights': 'OFF', 'radio': 'OFF', 'windows': 'DOWN'}
 ```
-6. The POST endpoints expect you to add **Content-Type** header, set to **application/json**.
+6. The POST endpoints expect you to add a **Content-Type** header, set to **application/json**.
 ``` JSON
 {"Content-Type": "application/json"}
 ```
@@ -54,7 +54,7 @@ python -m flask run
 ## Step 2: Configuring Azure OpenAI environment
 1. Assign Azure OpenAI API endpoint name, version and key, along with the Azure OpenAI deployment name of GPT-4-Turbo model to **OPENAI_API_BASE**, **OPENAI_API_VERSION**, **OPENAI_API_KEY** and **OPENAI_API_DEPLOY** environment variables.
 ![screenshot_2.1_environment](images/step2_aoai_env.png)
-2. AzureOpenAI client will be instantiated with retrieved environment variables.
+2. An AzureOpenAI client will be instantiated with retrieved environment variables.
 ``` Python
 client = AzureOpenAI(
     azure_endpoint = os.getenv("OPENAI_API_BASE"),
