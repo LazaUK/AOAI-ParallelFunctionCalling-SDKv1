@@ -2,12 +2,12 @@
 
 Version 1106 of Azure OpenAI GPT models, such as GPT-35-Turbo and GPT-4-Turbo, now supports the use of parallel function calling. This new feature allows your Azure OpenAI based solution to extract multiple intents from a single prompt, check the functions available and then execute them in parallel. As a result, your solution will perform more effectively and efficiently because of fewer round-trips between required multiple API calls.
 
-In this repo I'll demo the use of the latest openai Python package v1.x, that was released in November 2023. To use the latest version of *openai* python package, please upgrade it with the following pip command:
+In this repo I'll demo the use of the latest *openai* Python package v1.x, that was released in November 2023. To upgrade your *openai* python package, please use the following pip command:
 ```
 pip install --upgrade openai
 ```
 
-Additionally, to help with the practical test of API calls, I provide a companion Web app in Flask to expose in-car API endpoints of a fictitious automotive company. Detailed instructions on the Web app activation and the use of provided Jupyter notebooks are provided below.
+Additionally, to help with the practical test of API calls, I provided a companion Web app in Flask to expose in-car API endpoints of a fictitious automotive company. Detailed steps on the Web app setup and the use of provided Jupyter notebook are described below.
 
 ## Table of contents:
 - [Step 1: Configuring Flask Web app](https://github.com/LazaUK/AOAI-ParallelFunctionCalling-SDKv1#step-1-configuring-flask-web-app)
@@ -63,7 +63,7 @@ client = AzureOpenAI(
 )
 ```
 3. GPT-4-Turbo model will be called twice:
-- to analyse the original prompt and decide which functions to call.
+- to analyse the original prompt and decide which functions to use.
 ``` Python
 response = client.chat.completions.create(
     model = os.getenv("OPENAI_API_DEPLOY"),
@@ -72,7 +72,7 @@ response = client.chat.completions.create(
     tool_choice = "auto"
 )
 ```
-- and then again later to process data retrieved from API endpoints and send its completion back to the client.
+- and then again later to process data retrieved from API endpoints and send its final completion back to the client.
 ``` Python
 second_response = client.chat.completions.create(
     model = os.getenv("OPENAI_API_DEPLOY"),
@@ -81,7 +81,7 @@ second_response = client.chat.completions.create(
 ```
 
 ## Step 3: End-to-end testing of parallel function calling
-1. Set of available functions is described in the **tools** list. Function's description will provide a hint to GPT model on its capabilities, while the list of its proerties will be used to match with the prompt's entities. 
+1. The set of available functions is described in the **tools** list. Each function's description will provide a hint to the GPT model on its capabilities, while the list of its properties will be used to match with the prompt's entities. 
 ``` Python
 tools = [
     {
@@ -128,14 +128,14 @@ tools = [
     }
 ]
 ```
-2. Next step is to match the list of functions from **tools** with the actual Python functions.
+2. The next step is to match the list of functions from **tools** with the actual Python functions.
 ``` Python
 available_functions = {
     "set_vehicle_feature_on_off": vehicle_control,
     "set_vehicle_feature_up_down": vehicle_control
 }
 ```
-3. Based on the intent and entities extracted, Jupyter notebook will call relevant API endpoint of our Flask Web app.
+3. Based on the intent and entities extracted, the Jupyter notebook will call the relevant API endpoint of our Flask Web app.
 ``` Python
 def vehicle_control(feature, action, status):
     vehicle_control_api = f"{VEHICLE_URL}/{feature}"
@@ -149,14 +149,14 @@ def vehicle_control(feature, action, status):
     function_response = vehicle_control_status.json()
     return function_response
 ```
-4. You may set now your system and user prompts, or pass user messages dynamically.
+4. You may now set your system and user prompts, or pass user messages dynamically.
 ``` JSON
 [
     {"role": "system", "content": "You are a smart in-car assistant. Your listen to commands and control vehicle features like air conditioner, lights, radio and windows."},
     {"role": "user", "content": "Please, switch off the air conditioner and roll the windows down."}
 ]
 ```
-5. If everything was setup correctly, you should see something like this. Enjoy!
+5. If everything was setup correctly, you should get something like this. Enjoy!
 ``` JSON
 The air conditioner is now switched off, and the windows have been rolled down. Enjoy the breeze!
 ```
