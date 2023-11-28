@@ -12,7 +12,7 @@ Additionally, to help with the practical test of API calls, I provide a companio
 ## Table of contents:
 - [Step 1: Configuring Flask Web app](https://github.com/LazaUK/AOAI-ParallelFunctionCalling-SDKv1#step-1-configuring-flask-web-app)
 - [Step 2: Configuring Azure OpenAI environment](https://github.com/LazaUK/AOAI-ParallelFunctionCalling-SDKv1#step-2-configuring-azure-openai-environment)
-- [Step 3: End-to-end testing of parallel function calling]()
+- [Step 3: End-to-end testing of parallel function calling](https://github.com/LazaUK/AOAI-ParallelFunctionCalling-SDKv1#step-3-end-to-end-testing-of-parallel-function-calling)
 
 ## Step 1: Configuring Flask Web app
 1. Add new environment variable named **FLASK_APP** that points to the provided *Vehicle_API_Simulations.py* Python script.
