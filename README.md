@@ -63,7 +63,7 @@ client = AzureOpenAI(
 )
 ```
 3. GPT-4-Turbo model will be called twice:
-   - to analyse the original prompt and decide which functions to call.
+- to analyse the original prompt and decide which functions to call.
 ``` Python
 response = client.chat.completions.create(
     model = os.getenv("OPENAI_API_DEPLOY"), # model = "Azure OpenAI deployment name".
@@ -72,7 +72,7 @@ response = client.chat.completions.create(
     tool_choice = "auto",  # auto is default, but we'll be explicit
 )
 ```
-   - and then again later to process data retrieved from API endpoints and send its completion back to the client.
+- and then again later to process data retrieved from API endpoints and send its completion back to the client.
 ``` Python
 second_response = client.chat.completions.create(
     model = os.getenv("OPENAI_API_DEPLOY"), # model = "Azure OpenAI deployment name".
