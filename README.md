@@ -17,24 +17,28 @@ Additionally, to help with the practical test of API calls, I provided a compani
 ## Step 1: Configuring Flask Web app
 1. Add a new environment variable named **FLASK_APP** that points to the provided *Vehicle_API_Simulations.py* Python script.
 ![screenshot_1.1_environment](images/step1_flask_env.png)
-2. Start Flask Web app from the repo's root folder:
+2. Install required Python packages, by using pip command and provided requirements.txt file.
+```
+pip install -r requirements.txt
+```
+3. Start Flask Web app from the repo's root folder:
 ```
 python -m flask run
 ```
-3. You should be able to access its home page at http://localhost:5000/
+4. You should be able to access its home page at http://localhost:5000/
 ![screenshot_1.2_webapp](images/step1_flask_app.png)
-4. As described on the home page, this Web app exposes the following 5 API endpoints of a fictitious vehicle's in-car controls:
+5. As described on the home page, this Web app exposes the following 5 API endpoints of a fictitious vehicle's in-car controls:
    - GET endpoint at http://localhost:5000/status to get the latest **status** of each vehicle control;
    - POST endpoint at http://localhost:5000/airconditioner to switch the **air conditioner** on / off;
    - POST endpoint at http://localhost:5000/lights to switch the **lights** on / off;
    - POST endpoint at http://localhost:5000/radio to switch the **radio** on / off;
    - POST endpoint at http://localhost:5000/windows to roll the **windows** up / down.
 
-5. The Status endpoint returns key/value pairs for all 4 controls in JSON format.
+6. The Status endpoint returns key/value pairs for all 4 controls in JSON format.
 ``` JSON
 {'airconditioner': 'OFF', 'lights': 'OFF', 'radio': 'OFF', 'windows': 'DOWN'}
 ```
-6. The POST endpoints expect you to add a **Content-Type** header, set to **application/json**.
+7. The POST endpoints expect you to add a **Content-Type** header, set to **application/json**.
 ``` JSON
 {"Content-Type": "application/json"}
 ```
