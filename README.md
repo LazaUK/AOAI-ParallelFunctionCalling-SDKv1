@@ -11,7 +11,7 @@ Additionally, to help with the practical test of API calls, I provide a companio
 
 ## Table of contents:
 - [Step 1: Configuring Flask Web app](https://github.com/LazaUK/AOAI-ParallelFunctionCalling-SDKv1#step-1-configuring-flask-web-app)
-- [Step 2: Configuring Azure OpenAI environment]()
+- [Step 2: Configuring Azure OpenAI environment](https://github.com/LazaUK/AOAI-ParallelFunctionCalling-SDKv1#step-2-configuring-azure-openai-environment)
 - [Step 3: End-to-end testing of parallel function calling]()
 
 ## Step 1: Configuring Flask Web app
@@ -22,18 +22,19 @@ Additionally, to help with the practical test of API calls, I provide a companio
 python -m flask run
 ```
 3. You should be able to access its home page at http://localhost:5000/
-![screenshot_1.1_webapp](images/step1_flask_app.png)
+![screenshot_1.2_webapp](images/step1_flask_app.png)
 4. As described on the home page, this Web app exposes the following 5 API endpoints of a fictitious vehicle's in-car controls:
    - GET endpoint at http://localhost:5000/status to get the latest **status** of each vehicle control;
    - POST endpoint at http://localhost:5000/airconditioner to switch the **air conditioner** on / off;
    - POST endpoint at http://localhost:5000/lights to switch the **lights** on / off;
    - POST endpoint at http://localhost:5000/radio to switch the **radio** on / off;
    - POST endpoint at http://localhost:5000/windows to roll the **windows** up / down.
+
 5. The Status endpoint returns key/value pairs for all 4 controls in JSON format.
 ``` JSON
 {'airconditioner': 'OFF', 'lights': 'OFF', 'radio': 'OFF', 'windows': 'DOWN'}
 ```
-6. The POST endpoints expect you to add **Content-Type** header, indicating that payload is in JSON format.
+6. The POST endpoints expect you to add **Content-Type** header, set to **application/json**.
 ``` JSON
 {"Content-Type": "application/json"}
 ```
@@ -51,5 +52,32 @@ python -m flask run
 ```
 
 ## Step 2: Configuring Azure OpenAI environment
+1. Assign Azure OpenAI API endpoint name, version and key, along with the Azure OpenAI deployment name of GPT-4-Turbo model to **OPENAI_API_BASE**, **OPENAI_API_VERSION**, **OPENAI_API_KEY** and **OPENAI_API_DEPLOY** environment variables.
+![screenshot_2.1_environment](images/step2_aoai_env.png)
+2. AzureOpenAI client will be instantiated with retrieved environment variables.
+``` Python
+client = AzureOpenAI(
+    azure_endpoint = os.getenv("OPENAI_API_BASE"),
+    api_key = os.getenv("OPENAI_API_KEY"),
+    api_version = os.getenv("OPENAI_API_VERSION")
+)
+```
+3. GPT-4-Turbo model will be called twice:
+   - to analyse the original prompt and decide which functions to call.
+``` Python
+response = client.chat.completions.create(
+    model = os.getenv("OPENAI_API_DEPLOY"), # model = "Azure OpenAI deployment name".
+    messages = messages,
+    tools = tools,
+    tool_choice = "auto",  # auto is default, but we'll be explicit
+)
+```
+   - and then again later to process data retrieved from API endpoints and send its completion back to the client.
+``` Python
+second_response = client.chat.completions.create(
+    model = os.getenv("OPENAI_API_DEPLOY"), # model = "Azure OpenAI deployment name".
+    messages=messages
+)
+```
 
 ## Step 3: End-to-end testing of parallel function calling
